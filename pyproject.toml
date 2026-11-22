@@ -1,0 +1,20 @@
+[project]
+name = "dsde"
+version = "0.1.0"
+description = "Violated car detection platform"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "duckdb>=2.0.1",
+    "python-dotenv>=1.2.4",
+    "requests>=2.34.2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["test"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
