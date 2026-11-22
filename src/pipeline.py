@@ -45,6 +45,8 @@ def fetch(d: DataDownloader, name: str, tries: int = 3):
 def to_bronze(month: str, refresh: bool = False) -> None:
     """Download every source for `month` (YYYY-MM) and store the payload untouched in bronze.raw_data.
     Sources already in bronze are skipped (re-running resumes after failures) unless `refresh`."""
+    save_raw("cameras", CAMERAS_CSV.read_text(encoding="utf-8"))  # first: cheap, and gold needs it even if a download run is cut short
+    print("bronze cameras")
     d = DataDownloader()
     register_sources(d, month)
     with get_conn() as conn:
@@ -57,9 +59,6 @@ def to_bronze(month: str, refresh: bool = False) -> None:
             print("bronze", name)
         except requests.RequestException as e:  # one flaky source shouldn't lose the rest
             print(f"bronze {name}: FAILED, {e}")
-
-    save_raw("cameras", CAMERAS_CSV.read_text(encoding="utf-8"))
-    print("bronze cameras")
 
 
 def clean_source(conn, source: str) -> None:
